@@ -10,6 +10,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 	"image/color"
 	"log"
+	"shell_sort/controllers"
 	"strconv"
 )
 
@@ -47,6 +48,7 @@ func getListSizeContainer() *fyne.Container {
 	return container.NewVBox(input, widget.NewButton("Начать генерацию и сортировку", func() {
 		if validation(input.Text, selectedSortType) {
 			log.Println("All is OK!")
+			controllers.GetGraphicData(input.Text, selectedSortType)
 		}
 	}))
 }
