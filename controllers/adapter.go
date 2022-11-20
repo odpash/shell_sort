@@ -24,12 +24,8 @@ func GetGraphicData(listSizeStr string, sortType string) {
 		l = createSortedList(listSize)
 	case models.REVERSE_SORTED_LIST:
 		l = createReverseSortedList(listSize)
-
 	case models.PARTLY_SORTED_LIST:
 		l = createPartlySortedList(listSize, 20)
-
-	default:
-		l = createPartlySortedList(listSize, 20) // bags from egor
 	}
 	printList(l)
 }
