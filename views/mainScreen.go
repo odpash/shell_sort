@@ -1,45 +1,61 @@
 package views
 
 import (
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/canvas"
+	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/layout"
+	"fyne.io/fyne/v2/widget"
+	"image/color"
 	"log"
-
-	"github.com/gotk3/gotk3/gtk"
+	"strconv"
 )
 
+var selectedSortType string
+var a fyne.App
+var w fyne.Window
+
+func validation(listSize string, sortType string) bool {
+	if listSize == "" && sortType == "" {
+		dialog.ShowInformation("Ошибка валидации данных!", "Вы не указали размер двусвязанного списка или тип сортировки!", w)
+		return false
+	}
+	if _, err := strconv.Atoi(listSize); err != nil {
+		dialog.ShowInformation("Ошибка валидации данных!", "Вы указали не целое число в поле размера двусвязанного спискка!", w)
+		return false
+	}
+	return true
+}
+
+func getSortTypeLblContainer() *fyne.Container {
+	selectSortTypeLbl := canvas.NewText("Выберите тип сортировки:", color.White)
+	return container.New(layout.NewHBoxLayout(), layout.NewSpacer(), selectSortTypeLbl, layout.NewSpacer())
+}
+
+func getSortTypeSelectContainer() *fyne.Container {
+	return container.NewVBox(widget.NewSelect([]string{"Неупорядоченный массив", "Упорядоченный массив", "Обратно упорядоченный массив", "Частично упорядоченный массив"}, func(value string) {
+		log.Println("Select set to", value)
+		selectedSortType = value
+	}))
+}
+
+func getListSizeContainer() *fyne.Container {
+	input := widget.NewEntry()
+	input.SetPlaceHolder("Введите размер двусвязанного списка...")
+	return container.NewVBox(input, widget.NewButton("Начать генерацию и сортировку", func() {
+		if validation(input.Text, selectedSortType) {
+			log.Println("All is OK!")
+		}
+	}))
+}
+
 func CreateApplication() {
-	// Инициализируем GTK.
-	gtk.Init(nil)
-
-	// Создаём билдер
-	b, err := gtk.BuilderNew()
-	if err != nil {
-		log.Fatal("Ошибка:", err)
-	}
-
-	// Загружаем в билдер окно из файла Glade
-	err = b.AddFromFile("templates/main.glade")
-	if err != nil {
-		log.Fatal("Ошибка:", err)
-	}
-
-	// Получаем объект главного окна по ID
-	obj, err := b.GetObject("window_main")
-	if err != nil {
-		log.Fatal("Ошибка:", err)
-	}
-
-	// Преобразуем из объекта именно окно типа gtk.Window
-	// и соединяем с сигналом "destroy" чтобы можно было закрыть
-	// приложение при закрытии окна
-	win := obj.(*gtk.Window)
-	win.Connect("destroy", func() {
-		gtk.MainQuit()
-	})
-
-	// Отображаем все виджеты в окне
-	win.ShowAll()
-
-	// Выполняем главный цикл GTK (для отрисовки). Он остановится когда
-	// выполнится gtk.MainQuit()
-	gtk.Main()
+	a = app.New()
+	w = a.NewWindow("Shell Sort")
+	w.SetContent(container.New(layout.NewVBoxLayout(), getSortTypeLblContainer(), getSortTypeSelectContainer(), getListSizeContainer()))
+	w.SetFixedSize(true)
+	w.Resize(fyne.NewSize(500, 150))
+	w.ShowAndRun()
 }
