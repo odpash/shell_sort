@@ -69,5 +69,3 @@ func CreateApplication() {
 	w.Resize(fyne.NewSize(550, 200))
 	w.ShowAndRun()
 }
-
-//
