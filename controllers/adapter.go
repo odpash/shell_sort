@@ -3,6 +3,7 @@ package controllers
 import (
 	"container/list"
 	"fmt"
+	"shell_sort/controllers/sorts"
 	"shell_sort/models"
 	"strconv"
 )
@@ -27,5 +28,5 @@ func GetGraphicData(listSizeStr string, sortType string) {
 	case models.PARTLY_SORTED_LIST:
 		l = createPartlySortedList(listSize, 20)
 	}
-	printList(l)
+	sorts.RunTests(l)
 }
