@@ -14,9 +14,11 @@ func printList(l *list.List) {
 	fmt.Println()
 }
 
-func GetGraphicData(listSizeStr string, sortType string) {
+func GetGraphicData(listSizeStr string, sortType string, percentStr string) {
 	listSize, _ := strconv.Atoi(listSizeStr)
+	disorderPercent, _ := strconv.Atoi(percentStr)
 	var l *list.List
+	var c int
 	switch sortType {
 	case models.UNSORTED_LIST:
 		l = createUnsortedList(listSize)
@@ -25,7 +27,8 @@ func GetGraphicData(listSizeStr string, sortType string) {
 	case models.REVERSE_SORTED_LIST:
 		l = createReverseSortedList(listSize)
 	case models.PARTLY_SORTED_LIST:
-		l = createPartlySortedList(listSize, 20)
+		l, c = createPartlySortedList(listSize, disorderPercent)
 	}
 	printList(l)
+	fmt.Println(c)
 }

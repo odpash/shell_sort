@@ -56,7 +56,7 @@ func getListSizeContainer() *fyne.Container {
 	return container.NewVBox(inputSize, inputPercent, widget.NewButton("Начать генерацию и сортировку", func() {
 		if validation(inputSize.Text, selectedSortType, inputPercent.Text) {
 			log.Println("All is OK!")
-			controllers.GetGraphicData(inputSize.Text, selectedSortType)
+			controllers.GetGraphicData(inputSize.Text, selectedSortType, inputPercent.Text)
 		}
 	}))
 }
@@ -69,5 +69,3 @@ func CreateApplication() {
 	w.Resize(fyne.NewSize(550, 200))
 	w.ShowAndRun()
 }
-
-//

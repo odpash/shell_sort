@@ -38,7 +38,7 @@ func createReverseSortedList(listSize int) *list.List {
 	return linkedList
 }
 
-func createPartlySortedList(listSize int, disordersPercent int) *list.List {
+func createPartlySortedList(listSize int, disordersPercent int) (*list.List, int) {
 	linkedList := list.New()
 	lastElement := 0
 	counter := 0
@@ -55,6 +55,5 @@ func createPartlySortedList(listSize int, disordersPercent int) *list.List {
 		}
 		linkedList.PushBack(result)
 	}
-	log.Println(counter)
-	return linkedList
+	return linkedList, counter
 }
